@@ -1,0 +1,66 @@
+---
+title: "troubleshooting and probablymore graphs"
+author: "Shale"
+date: "8/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(here)
+library(palmerpenguins)
+library(reprex)
+```
+
+## janitor::get_dupes()
+
+```{r}
+eye_to_eye = starwars %>% 
+  get_dupes(height)
+```
+
+## dplyr::across()
+
+```{r}
+star_acrossed_lovers = starwars %>% 
+  mutate(across(where(is.character), tolower)) %>% 
+  group_by(homeworld) %>% 
+  summarise(across(where(is.numeric), mean, na.rm = TRUE))
+```
+
+## trouble shooting practice
+
+```{r}
+many_manguins = penguins %>% 
+  mutate(across(where(is.numeric), as.character)) %>% 
+  mutate(island = fct_relevel(island, c("Dream", "Biscoe", "Torgersen"))) %>% 
+  unite(spp_i, c(island, species), sep = " / ") %>% 
+  filter(sex == "female")
+```
+
+## self contained shareable troubleshooting examples
+
+reprex()
+copy code chunk to clipboard
+run reprex() in console (must have package loaded)
+
+```{r}
+library(tidyverse)
+
+df = tribble(
+  ~name, ~height, ~color,
+  "Tom", 5.6, NA,
+  "T", 5.7, "brown",
+  "Mom", 5.2, "black"
+)
+
+df %>% filter(name == "Tom")
+```
+
+
+
+
